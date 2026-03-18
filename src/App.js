@@ -8,7 +8,7 @@ function App() {
 
 
   //can change units to imperial tr it when u see this!
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=8862ca79296c2887453a4e1310c20915`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${process.env.REACT_APP_API_KEY}`;
 
   <link
     href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@600&display=swap"
