@@ -4,6 +4,7 @@ import axios from "axios";
 function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
+  const [error, setError] = useState("");
 
 
   //can change units to imperial tr it when u see this!
@@ -16,12 +17,17 @@ function App() {
 
   //connecting to API on search fxn n run axios n render all
   // this in an 'Enter' button
-  const searchLocation = (event) => {
+  const searchLocation = async (event) => {
     if (event.key === "Enter") {
-      axios.get(url).then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      });
+      try {
+      const response = await axios.get(url);
+      setData(response.data);
+      setError(""); // clear error if successful
+      console.log(response.data);
+    } catch (err) {
+      setError("Please enter a valid city name");
+      setData({}); // clear previous data
+    }
       setLocation("");
     }
   };
@@ -36,6 +42,7 @@ function App() {
           placeholder="Enter Location"
           type="text"
         />
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
       <div className="container">
         <div className="top">
