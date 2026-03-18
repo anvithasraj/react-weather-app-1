@@ -17,20 +17,39 @@ function App() {
 
   //connecting to API on search fxn n run axios n render all
   // this in an 'Enter' button
-  const searchLocation = async (event) => {
-    if (event.key === "Enter") {
-      try {
+const searchLocation = async (event) => {
+  if (event.key === "Enter") {
+    if (!location.trim()) {
+      setError("Please enter a city name");
+      return;
+    }
+
+    try {
       const response = await axios.get(url);
+
+      // Extra safety check
+      if (response.status !== 200) {
+        throw new Error("Invalid city");
+      }
+
       setData(response.data);
-      setError(""); // clear error if successful
-      console.log(response.data);
+      setError("");
     } catch (err) {
-      setError("Please enter a valid city name");
-      setData({}); // clear previous data
+      console.log(err); // for debugging
+
+      // Handle specific Axios error
+      if (err.response && err.response.status === 404) {
+        setError("Please enter a valid city name");
+      } else {
+        setError("Something went wrong. Try again.");
+      }
+
+      setData({});
     }
-      setLocation("");
-    }
-  };
+
+    setLocation("");
+  }
+};
 
   return (
     <div className="App">
